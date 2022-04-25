@@ -5,7 +5,12 @@
 package it.polito.tdp.meteo;
 
 import java.net.URL;
+import java.util.*;
 import java.util.ResourceBundle;
+
+import it.polito.tdp.meteo.model.Citta;
+import it.polito.tdp.meteo.model.Model;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,6 +18,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 
 public class FXMLController {
+	
+	Model model;
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -21,7 +28,7 @@ public class FXMLController {
     private URL location;
 
     @FXML // fx:id="boxMese"
-    private ChoiceBox<?> boxMese; // Value injected by FXMLLoader
+    private ChoiceBox<Integer> boxMese; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnUmidita"
     private Button btnUmidita; // Value injected by FXMLLoader
@@ -35,11 +42,28 @@ public class FXMLController {
     @FXML
     void doCalcolaSequenza(ActionEvent event) {
 
+    	Integer m = boxMese.getValue(); //int cannot be null so I use Integer here to then allow the control below
+    	
+    	if(m!=null) {
+    		List<Citta> best = model.trovaSequenza(m);
+    		
+    		txtResult.appendText(String.format("Sequenza ottima per il mese %s\n", Integer.toString(m)));
+    		txtResult.appendText(best + "\n");
+    	}
+    	
     }
 
     @FXML
     void doCalcolaUmidita(ActionEvent event) {
 
+    	txtResult.setText("I valori di umidità media per le varie città sono: \n");
+    	
+    	for(Citta c : model.getCitta()) {
+    		double umidita = model.getUmiditaMedia(boxMese.getValue(), c.getNome());
+    		txtResult.appendText(c.getNome() + ": " + umidita + "\n");
+    	}
+    	
+    	
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -48,7 +72,17 @@ public class FXMLController {
         assert btnUmidita != null : "fx:id=\"btnUmidita\" was not injected: check your FXML file 'Scene.fxml'.";
         assert btnCalcola != null : "fx:id=\"btnCalcola\" was not injected: check your FXML file 'Scene.fxml'.";
         assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Scene.fxml'.";
+        
+        for(int i=1;i<13;i++) {
+        	boxMese.getItems().add(i);
+        }
+        
+        
 
+    }
+    
+    void setModel(Model model) {
+    	this.model = model;
     }
 }
 
