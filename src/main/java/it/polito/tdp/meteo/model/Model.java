@@ -13,16 +13,14 @@ public class Model {
 	private final static int NUMERO_GIORNI_CITTA_MAX = 6;
 	private final static int NUMERO_GIORNI_TOTALI = 15;
 	
-	private List<Citta> leCitta;
+	private List<Citta> leCitta = new ArrayList<>(dao.getCitta());
 	private List<Citta> best;
 
 	public Model() {
 	
 	}
 	
-	public List<Citta> getLeCitta(){
-		leCitta = new ArrayList<>(dao.getCitta());
-		
+	public List<Citta> getLeCitta(){	
 		return this.leCitta;
 	}
 
@@ -46,10 +44,6 @@ public class Model {
 		return best;
 	}
 	
-	public List<Citta> getCitta(){
-		return dao.getCitta();
-	}
-
 	
 	public void cerca(List<Citta> parziale , int L){
 		

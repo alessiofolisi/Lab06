@@ -47,7 +47,7 @@ public class FXMLController {
     	if(m!=null) {
     		List<Citta> best = model.trovaSequenza(m);
     		
-    		txtResult.appendText(String.format("Sequenza ottima per il mese %s\n", Integer.toString(m)));
+    		txtResult.appendText(String.format("\nSequenza ottima per il mese %s\n", Integer.toString(m)));
     		txtResult.appendText(best + "\n");
     	}
     	
@@ -58,7 +58,7 @@ public class FXMLController {
 
     	txtResult.setText("I valori di umidità media per le varie città sono: \n");
     	
-    	for(Citta c : model.getCitta()) {
+    	for(Citta c : model.getLeCitta()) {
     		double umidita = model.getUmiditaMedia(boxMese.getValue(), c.getNome());
     		txtResult.appendText(c.getNome() + ": " + umidita + "\n");
     	}
